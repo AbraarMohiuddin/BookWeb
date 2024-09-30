@@ -10,34 +10,31 @@ pipeline {
 
         stage('Restore') {
             steps {
-                sh 'dotnet restore'
+                bat 'dotnet restore'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'dotnet build --configuration Debug'
+                bat 'dotnet build --configuration Debug'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'dotnet test'
+                bat 'dotnet test'
             }
         }
 
         stage('Publish') {
             steps {
-                sh 'dotnet publish --configuration Release'
+                bat 'dotnet publish --configuration Release'
             }
         }
 
         stage('Deploy to Azure') {
             steps {
-
-                script {
-                    echo 'Will Deploy to Azure...'
-                }
+                echo 'Deploying to Azure...'
             }
         }
     }
