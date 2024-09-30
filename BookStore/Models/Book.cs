@@ -20,6 +20,7 @@ namespace BookStore.Models
         [Required]
         [Range(0, 1000)]
         public decimal Price { get; set; }
+        // Genre?
     }
 
 }
