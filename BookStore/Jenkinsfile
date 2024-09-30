@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/AbraarMohiuddin/BookWeb.git'
+            }
+        }
+
+        stage('Restore') {
+            steps {
+                sh 'dotnet restore'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'dotnet build --configuration Debug'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'dotnet test'
+            }
+        }
+
+        stage('Publish') {
+            steps {
+                sh 'dotnet publish --configuration Release'
+            }
+        }
+
+        stage('Deploy to Azure') {
+            steps {
+
+                script {
+                    echo 'Will Deploy to Azure...'
+                }
+            }
+        }
+    }
+}
