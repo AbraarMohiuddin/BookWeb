@@ -36,7 +36,7 @@ pipeline {
             steps {
 
                 script {
-                    echo 'Deploying to Azure...'
+                    echo 'Will Deploy to Azure...'
                 }
             }
         }
