@@ -1,10 +1,14 @@
 pipeline {
     agent any
 
+    environment {
+        GITHUB_TOKEN = credentials('Github_Token')
+    }
+
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/AbraarMohiuddin/BookWeb.git'
+                git url: 'https://github.com/AbraarMohiuddin/BookWeb.git', credentialsId: 'Github_Token'
             }
         }
 
@@ -35,6 +39,7 @@ pipeline {
         stage('Deploy to Azure') {
             steps {
                 echo 'Deploying to Azure...'
+                // Add deployment steps here
             }
         }
     }
