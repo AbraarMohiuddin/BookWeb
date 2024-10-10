@@ -3,8 +3,6 @@ pipeline {
 
     environment {
         GITHUB_TOKEN = credentials('Github_Token')
-        DOCKER_REGISTRY_CREDENTIALS = credentials('DockerHub_Credentials')
-        AZURE_PUBLISH_PROFILE = credentials('Azure_Publish_Profile')
     }
 
     stages {
@@ -14,68 +12,35 @@ pipeline {
             }
         }
 
-stage('Build Docker Image') {
-    steps {
-        script {
-            dockerImage = docker.build("bookstore:latest", "BookStore/") // Specify the path to the Dockerfile here
-        }
-    }
-}
-
-
-        stage('Run Tests in Docker') {
+        stage('Restore') {
             steps {
-                script {
-                    dockerImage.inside {
-                        bat 'dotnet test'
-                    }
-                }
+                bat 'dotnet restore'
             }
         }
 
-        stage('Package for Deployment') {
+        stage('Build') {
             steps {
-                script {
-                    // Assuming the build output is located in /app/publish (based on Dockerfile)
-                    sh '''
-                        mkdir -p build_output
-                        cp -r /app/publish/* build_output/
-                        zip -r build_output/bookstore.zip build_output/*
-                    '''
-                }
+                bat 'dotnet build --configuration Debug'
             }
         }
 
-        stage('Deploy to Test Server') {
+        stage('Test') {
             steps {
-                script {
-                    sh '''
-                        docker stop bookstore-test || true
-                        docker rm bookstore-test || true
-                        docker run -d --name bookstore-test -p 8081:80 bookstore:latest
-                    '''
-                }
+                bat 'dotnet test'
             }
         }
 
-        stage('Deploy to Azure Production') {
-            when {
-                branch 'main'
-            }
+        stage('Publish') {
             steps {
-                withCredentials([file(credentialsId: 'Azure_Publish_Profile', variable: 'PUBLISH_PROFILE')]) {
-                    sh '''
-                        az webapp deployment source config-zip --resource-group defaultresourcegroup-cau \
-                        --name BookStore20241010200200 --src build_output/bookstore.zip \
-                        --slot production --publish-profile $PUBLISH_PROFILE
-                    '''
-                }
+                bat 'dotnet publish --configuration Release'
             }
         }
-    }
-    post {
-        always {
-            cleanWs()
+
+        stage('Deploy to Azure') {
+            steps {
+                echo 'Deploying to Azure...'
+                // Add deployment steps here
+            }
         }
     }
 }
