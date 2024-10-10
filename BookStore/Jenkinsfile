@@ -38,10 +38,7 @@ pipeline {
         stage('Deploy to Azure') {
             steps {
                 echo 'Deploying to Azure...'
-                bat """
-                    az login --service-principal -u ${AZURE_CREDENTIALS_USR} -p ${AZURE_CREDENTIALS_PSW} --tenant <tenant_id>
-                    az webapp deploy --resource-group <DefaultResourceGroup-CAU> --name BookHubProd --src-path ./publish
-                """
+
             }
         }
     }
