@@ -14,13 +14,14 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    dockerImage = docker.build("bookstore:latest")
-                }
-            }
+stage('Build Docker Image') {
+    steps {
+        script {
+            dockerImage = docker.build("bookstore:latest", "BookStore/") // Specify the path to the Dockerfile here
         }
+    }
+}
+
 
         stage('Run Tests in Docker') {
             steps {
