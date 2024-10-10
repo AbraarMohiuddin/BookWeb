@@ -17,7 +17,7 @@ pipeline {
 stage('Build Docker Image') {
     steps {
         script {
-            dockerImage = docker.build("bookstore:latest", "BookStore/Dockerfile") // Specify the path to the Dockerfile here
+            dockerImage = docker.build("bookstore:latest", "BookStore/") // Specify the path to the Dockerfile here
         }
     }
 }
