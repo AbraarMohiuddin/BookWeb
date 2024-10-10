@@ -14,38 +14,6 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    // Specify the path to the Dockerfile in BookStore and set the build context to the repository root
-                    dockerImage = docker.build("bookstore:latest", "-f BookStore/Dockerfile ./")
-                }
-            }
-        }
-
-        stage('Run Tests in Docker') {
-            steps {
-                script {
-                    dockerImage.inside {
-                        bat 'dotnet test'
-                    }
-                }
-            }
-        }
-
-        stage('Package for Deployment') {
-            steps {
-                script {
-                    // Assuming the build output is located in /app/publish (based on Dockerfile)
-                    sh '''
-                        mkdir -p build_output
-                        cp -r /app/publish/* build_output/
-                        zip -r build_output/bookstore.zip build_output/*
-                    '''
-                }
-            }
-        }
-
         stage('Deploy to Test Server') {
             steps {
                 script {
