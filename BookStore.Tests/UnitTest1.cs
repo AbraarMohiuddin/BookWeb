@@ -1,6 +1,8 @@
 using Xunit;
 using BookStore.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
+using BookStore.Data;
 using System.Threading.Tasks;
 
 namespace BookStore.Tests
@@ -11,7 +13,8 @@ namespace BookStore.Tests
         public async Task Index_ReturnsViewResult()
         {
             // Arrange
-            var controller = new BooksController(null);
+            var mockDbContext = new Mock<ApplicationDbContext>();
+            var controller = new BooksController(mockDbContext.Object);
 
             // Act
             var result = await controller.Index();
@@ -25,7 +28,8 @@ namespace BookStore.Tests
         public void Create_ReturnsViewResult()
         {
             // Arrange
-            var controller = new BooksController(null);
+            var mockDbContext = new Mock<ApplicationDbContext>();
+            var controller = new BooksController(mockDbContext.Object);
 
             // Act
             var result = controller.Create();
