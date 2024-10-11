@@ -33,7 +33,7 @@ jobs:
         run: dotnet publish --configuration Release -o publish_output
 
       # Step 6: Build Docker image for testing
-      - name: Build Docker image
+      - name: Build Docker image and run 2 unit tests
         run: docker build -t bookstore-test -f BookStore/Dockerfile .
 
       # Step 8: Cleanup Docker image
