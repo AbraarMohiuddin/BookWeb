@@ -3,8 +3,10 @@ pipeline {
 
     environment {
         GITHUB_TOKEN = credentials('Github_Token')
-        AZURE_PUBLISH_PROFILE = credentials('Azure_Publish_Profile') 
-
+        AZURE_PUBLISH_PROFILE = credentials('Azure_Publish_Profile')
+        AZURE_APP_NAME = 'BookStore20241010200200'
+        AZURE_RESOURCE_GROUP = 'defaultresourcegroup-cau'
+        PUBLISH_OUTPUT_PATH = 'publish_output'
     }
 
     stages {
@@ -28,14 +30,13 @@ pipeline {
 
         stage('Publish') {
             steps {
-                bat 'dotnet publish --configuration Release --output publish_output'
+                bat "dotnet publish --configuration Release --output ${PUBLISH_OUTPUT_PATH}"
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image with the name "bookstore-test"
                     bat 'docker build -t bookstore-test -f BookStore/Dockerfile .'
                 }
             }
@@ -44,14 +45,12 @@ pipeline {
         stage('Cleanup Docker Containers') {
             steps {
                 script {
-                    // Cleanup Docker images after build
                     bat '''
                     docker rmi bookstore-test || exit /b 0
                     '''
                 }
             }
         }
-    
 
         stage('Deploy to Azure') {
             when {
@@ -62,13 +61,13 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'Azure_Publish_Profile', variable: 'PUBLISH_PROFILE')]) {
-                        bat '''
-                        az webapp deployment source config-zip \
-                        --resource-group defaultresourcegroup-cau \
-                        --name BookStore20241010200200 \
-                        --src-path publish_output \
+                        bat """
+                        az webapp deployment source config-zip `
+                        --resource-group ${AZURE_RESOURCE_GROUP} `
+                        --name ${AZURE_APP_NAME} `
+                        --src-path ${PUBLISH_OUTPUT_PATH}.zip `
                         --publish-profile %PUBLISH_PROFILE%
-                        '''
+                        """
                     }
                 }
             }
@@ -78,11 +77,6 @@ pipeline {
     post {
         always {
             cleanWs()
-            script {
-                bat '''
-                docker rmi bookstore-test || exit /b 0
-                '''
-            }
         }
     }
 }
