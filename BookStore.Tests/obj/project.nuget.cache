@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Fty9dqA4yJq8H11oCpE36z5GVLv7ZeisNTemtrkcTdIiZpKZ2/ETgeMwsb6EnwCPZRzY2igBeQhY0brpFTVZzg==",
+  "dgSpecHash": "UZ285veS4O1bL/c32XbFcchFLA/BMVjy7XPvTBVBK9RbQD4H7rmsnEVBq6xL4w8TDygi/wvfrIwku7KRjFiy9A==",
   "success": true,
   "projectFilePath": "C:\\Users\\abraa\\projects\\Dep3\\BookStore\\BookStore.Tests\\BookStore.Tests.csproj",
   "expectedPackageFiles": [
@@ -77,6 +77,7 @@
     "C:\\Users\\abraa\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.3\\microsoft.entityframeworkcore.7.0.3.nupkg.sha512",
     "C:\\Users\\abraa\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.3\\microsoft.entityframeworkcore.abstractions.7.0.3.nupkg.sha512",
     "C:\\Users\\abraa\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.3\\microsoft.entityframeworkcore.analyzers.7.0.3.nupkg.sha512",
+    "C:\\Users\\abraa\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\7.0.3\\microsoft.entityframeworkcore.inmemory.7.0.3.nupkg.sha512",
     "C:\\Users\\abraa\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\7.0.2\\microsoft.entityframeworkcore.relational.7.0.2.nupkg.sha512",
     "C:\\Users\\abraa\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\7.0.0\\microsoft.extensions.caching.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\abraa\\.nuget\\packages\\microsoft.extensions.caching.memory\\7.0.0\\microsoft.extensions.caching.memory.7.0.0.nupkg.sha512",

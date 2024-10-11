@@ -9,6 +9,7 @@
       "BookStore.Tests/1.0.0": {
         "dependencies": {
           "BookStore": "1.0.0",
+          "Microsoft.EntityFrameworkCore.InMemory": "7.0.3",
           "Microsoft.NET.Test.Sdk": "17.6.0",
           "Moq": "4.20.72",
           "coverlet.collector": "6.0.0",
@@ -1089,6 +1090,17 @@
         }
       },
       "Microsoft.EntityFrameworkCore.Analyzers/7.0.3": {},
+      "Microsoft.EntityFrameworkCore.InMemory/7.0.3": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "7.0.3"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.EntityFrameworkCore.InMemory.dll": {
+            "assemblyVersion": "7.0.3.0",
+            "fileVersion": "7.0.323.6302"
+          }
+        }
+      },
       "Microsoft.EntityFrameworkCore.Relational/7.0.2": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "7.0.3",
@@ -1915,6 +1927,7 @@
       "BookStore/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "7.0.3",
+          "Microsoft.EntityFrameworkCore.InMemory": "7.0.3",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "8.0.5",
           "Moq": "4.20.72",
           "Pomelo.EntityFrameworkCore.MySql": "7.0.0",
@@ -2442,6 +2455,13 @@
       "sha512": "sha512-CLyRWFLwaOUZNPEia/aBMzFxZqm/ITKt3B+yUFtrg4Ys5VF3n2gvneuItC9IhpeOcjfdSgu/yUKf8y/IsNHs5A==",
       "path": "microsoft.entityframeworkcore.analyzers/7.0.3",
       "hashPath": "microsoft.entityframeworkcore.analyzers.7.0.3.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.InMemory/7.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-II0TxiTXwUaHYcn4qlC+GgcrkZaZdjgfHEIfWkPJe84YOVBNshdfBEkeGnVT+n70RKOj+1NyplGo9h22jVGSWA==",
+      "path": "microsoft.entityframeworkcore.inmemory/7.0.3",
+      "hashPath": "microsoft.entityframeworkcore.inmemory.7.0.3.nupkg.sha512"
     },
     "Microsoft.EntityFrameworkCore.Relational/7.0.2": {
       "type": "package",

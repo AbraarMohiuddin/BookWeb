@@ -306,3 +306,4 @@ C:\Users\abraa\projects\Dep3\BookStore\BookStore.Tests\obj\Debug\net8.0\BookStor
 C:\Users\abraa\projects\Dep3\BookStore\BookStore.Tests\obj\Debug\net8.0\ref\BookStore.Tests.dll
 C:\Users\abraa\projects\Dep3\BookStore\BookStore.Tests\bin\Debug\net8.0\Castle.Core.dll
 C:\Users\abraa\projects\Dep3\BookStore\BookStore.Tests\bin\Debug\net8.0\Moq.dll
+C:\Users\abraa\projects\Dep3\BookStore\BookStore.Tests\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.InMemory.dll
