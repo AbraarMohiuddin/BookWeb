@@ -24,22 +24,54 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                bat 'dotnet test'
-            }
-        }
-
         stage('Publish') {
             steps {
-                bat 'dotnet publish --configuration Release'
+                bat 'dotnet publish --configuration Release --output publish_output'
             }
         }
 
-        stage('Deploy to Azure') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Deploying to Azure...'
-                // Add deployment steps here
+                script {
+                    // Build the Docker image with the name "bookstore-test"
+                    bat 'docker build -t bookstore-test -f BookStore/Dockerfile .'
+                }
+            }
+        }
+
+        stage('Run Tests in Docker') {
+            steps {
+                script {
+                    // Run tests inside the Docker container
+                    bat '''
+                    docker run --name bookstore-test-container bookstore-test \
+                    dotnet test /src/BookStore/BookStore.Tests/BookStore.Tests.csproj
+                    '''
+                }
+            }
+        }
+
+        stage('Cleanup Docker Containers') {
+            steps {
+                script {
+                    // Stop and remove the test container after running tests
+                    bat '''
+                    docker stop bookstore-test-container || true
+                    docker rm bookstore-test-container || true
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up workspace and any leftover Docker containers/images
+            cleanWs()
+            script {
+                bat '''
+                docker rmi bookstore-test || true
+                '''
             }
         }
     }
