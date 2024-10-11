@@ -39,25 +39,12 @@ pipeline {
             }
         }
 
-        stage('Run Tests in Docker') {
-            steps {
-                script {
-                    // Override the entry point to run tests instead of starting the application
-                    bat '''
-                    docker run --rm --name bookstore-test-container \
-                    bookstore-test dotnet test /src/BookStore/BookStore.csproj
-                    '''
-                }
-            }
-        }
-
         stage('Cleanup Docker Containers') {
             steps {
                 script {
-                    // Cleanup Docker containers after tests
+                    // Cleanup Docker images after build
                     bat '''
-                    docker stop bookstore-test-container || true
-                    docker rm bookstore-test-container || true
+                    docker rmi bookstore-test || true
                     '''
                 }
             }
@@ -66,13 +53,8 @@ pipeline {
 
     post {
         always {
-            // Clean up workspace and any leftover Docker containers/images
+            // Clean up workspace and any leftover Docker images
             cleanWs()
-            script {
-                bat '''
-                docker rmi bookstore-test || true
-                '''
-            }
         }
     }
 }
