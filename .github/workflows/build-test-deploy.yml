@@ -3,7 +3,7 @@ name: Build, Test, and Deploy to Azure Web App
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-test-deploy:
