@@ -1,9 +1,8 @@
-﻿// BasicTests.cs
+// BasicTests.cs
 
-using NuGet.ContentModel;
 using Xunit;
 
-namespace BookStore
+namespace BookStore.Tests
 {
     public class BasicTests
     {

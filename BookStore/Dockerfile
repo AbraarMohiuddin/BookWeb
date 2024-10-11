@@ -4,7 +4,8 @@ WORKDIR /src
 
 # Copy the project files and restore dependencies
 COPY ["BookStore/BookStore.csproj", "BookStore/"]
-RUN dotnet restore "BookStore/BookStore.csproj"
+COPY ["BookStore.Tests/BookStore.Tests.csproj", "BookStore.Tests/"]
+RUN dotnet restore "BookStore/BookStore.sln"
 
 # Copy the entire project and build it
 COPY . .
@@ -12,10 +13,11 @@ WORKDIR "/src/BookStore"
 RUN dotnet build "BookStore.csproj" -c Release -o /app/build
 
 # Run tests during the build
-# If you have a separate test project, reference it here; otherwise, run tests for the main project
-RUN dotnet test "BookStore.csproj" --no-build --verbosity normal
+WORKDIR "/src/BookStore.Tests"
+RUN dotnet test "BookStore.Tests.csproj" --no-build --verbosity normal
 
 # Publish the application
+WORKDIR "/src/BookStore"
 RUN dotnet publish "BookStore.csproj" -c Release -o /app/publish
 
 # Use the ASP.NET runtime to run the application
