@@ -1,26 +1,38 @@
-namespace BookStore.Tests;
+using Xunit;
+using BookStore.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
-public class UnitTest1
+namespace BookStore.Tests
 {
-    [Fact]
-    public void SimpleTest_ShouldPass()
+    public class UnitTest1
     {
-        // Arrange
-        int expected = 5;
-        int actual = 5;
+        [Fact]
+        public async Task Index_ReturnsViewResult()
+        {
+            // Arrange
+            var controller = new BooksController(null);
 
-        // Act & Assert
-        Assert.Equal(expected, actual);
-    }
+            // Act
+            var result = await controller.Index();
 
-    [Fact]
-    public void SimpleTest_ShouldFail()
-    {
-        // Arrange
-        int expected = 5;
-        int actual = 3;
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.NotNull(viewResult);
+        }
 
-        // Act & Assert
-        Assert.NotEqual(expected, actual);
+        [Fact]
+        public void Create_ReturnsViewResult()
+        {
+            // Arrange
+            var controller = new BooksController(null);
+
+            // Act
+            var result = controller.Create();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.NotNull(viewResult);
+        }
     }
 }
