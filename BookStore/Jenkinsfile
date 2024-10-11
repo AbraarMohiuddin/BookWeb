@@ -71,7 +71,6 @@ pipeline {
                         --resource-group defaultresourcegroup-cau ^
                         --name BookStore20241010200200 ^
                         --src-path publish_output.zip ^
-                        --publish-profile "%PUBLISH_PROFILE%"
                         """
                     }
                 }
