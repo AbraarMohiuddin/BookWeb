@@ -5,7 +5,7 @@ WORKDIR /src
 # Copy the project files and restore dependencies
 COPY ["BookStore/BookStore.csproj", "BookStore/"]
 COPY ["BookStore.Tests/BookStore.Tests.csproj", "BookStore.Tests/"]
-RUN dotnet restore "BookStore/BookStore.sln"
+RUN dotnet restore "BookStore/BookStore.csproj"
 
 # Copy the entire project and build it
 COPY . .
