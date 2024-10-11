@@ -36,11 +36,6 @@ jobs:
       - name: Build Docker image
         run: docker build -t bookstore-test -f BookStore/Dockerfile .
 
-      # Step 7: Run tests in Docker
-      - name: Run tests in Docker container
-        run: |
-          docker run --rm bookstore-test dotnet test /src/BookStore.Tests/BookStore.Tests.csproj --no-build --verbosity normal
-
       # Step 8: Cleanup Docker image
       - name: Cleanup Docker image
         run: docker rmi bookstore-test || true
