@@ -1,0 +1,60 @@
+name: Build, Test, and Deploy to Azure Web App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up .NET
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: "8.0.x"
+
+      # Step 3: Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Step 4: Build the project
+      - name: Build project
+        run: dotnet build --configuration Release
+
+      # Step 5: Publish the project
+      - name: Publish project
+        run: dotnet publish --configuration Release -o publish_output
+
+      # Step 6: Build Docker image for testing
+      - name: Build Docker image
+        run: docker build -t bookstore-test -f BookStore/Dockerfile .
+
+      # Step 7: Run tests in Docker
+      - name: Run tests in Docker container
+        run: |
+          docker run --rm bookstore-test dotnet test /src/BookStore.Tests/BookStore.Tests.csproj --no-build --verbosity normal
+
+      # Step 8: Cleanup Docker image
+      - name: Cleanup Docker image
+        run: docker rmi bookstore-test || true
+
+      # Step 9: Create Zip Package for deployment
+      - name: Create Zip Package
+        run: |
+          zip -r publish_output.zip publish_output/*
+
+      # Step 10: Deploy to Azure Web App
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "BookStore20241010200200"
+          slot-name: "production"
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: publish_output.zip
