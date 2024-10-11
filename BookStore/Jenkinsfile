@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         GITHUB_TOKEN = credentials('Github_Token')
-        AZURE_PUBLISH_PROFILE = credentials('Azure_Publish_Profile') 
+        AZURE_PUBLISH_PROFILE = credentials('Azure_Publish_Profile')
     }
 
     stages {
@@ -48,40 +48,35 @@ pipeline {
                 }
             }
         }
+        
         stage('Create Zip Package') {
-    steps {
-        script {
-            bat 'powershell Compress-Archive -Path publish_output\\* -DestinationPath publish_output.zip'
-        }
-    }
-}
-
-stage('Deploy to Azure') {
-    when {
-        expression {
-            currentBuild.result == null || currentBuild.result == 'SUCCESS'
-        }
-    }
-    steps {
-        script {
-            withCredentials([file(credentialsId: 'Azure_Publish_Profile', variable: 'PUBLISH_PROFILE')]) {
-                powershell '''
-                $publishProfile = [xml](Get-Content $env:PUBLISH_PROFILE)
-                $publishUrl = $publishProfile.publishData.publishProfile[0].publishUrl
-                $userName = $publishProfile.publishData.publishProfile[0].userName
-                $userPWD = $publishProfile.publishData.publishProfile[0].userPWD
-                $zipFilePath = 'publish_output.zip'
-
-                $password = ConvertTo-SecureString $userPWD -AsPlainText -Force
-                $credential = New-Object System.Management.Automation.PSCredential($userName, $password)
-
-                Invoke-WebRequest -Uri "https://$publishUrl/api/zipdeploy" -Method POST -InFile $zipFilePath -Headers @{"Content-Type"="application/zip"} -Credential $credential
-                '''
+            steps {
+                script {
+                    bat 'powershell Compress-Archive -Path publish_output\\* -DestinationPath publish_output.zip'
+                }
             }
         }
-    }
-}
 
+        stage('Deploy to Azure') {
+            when {
+                expression {
+                    currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                }
+            }
+            steps {
+                script {
+                    withCredentials([file(credentialsId: 'Azure_Publish_Profile', variable: 'PUBLISH_PROFILE')]) {
+                        bat """
+                        az webapp deploy ^
+                        --resource-group defaultresourcegroup-cau ^
+                        --name BookStore20241010200200 ^
+                        --src-path publish_output.zip ^
+                        --publish-profile "%PUBLISH_PROFILE%"
+                        """
+                    }
+                }
+            }
+        }
     }
 
     post {
