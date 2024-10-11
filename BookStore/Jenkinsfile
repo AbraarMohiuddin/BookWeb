@@ -39,22 +39,22 @@ pipeline {
             }
         }
 
-stage('Run Tests in Docker') {
-    steps {
-        script {
-            // Override the entry point to run tests instead of starting the application
-            bat '''
-            docker run --rm --name bookstore-test-container \
-            bookstore-test dotnet test /src/BookStore/BookStore.sln
-            '''
+        stage('Run Tests in Docker') {
+            steps {
+                script {
+                    // Override the entry point to run tests instead of starting the application
+                    bat '''
+                    docker run --rm --name bookstore-test-container \
+                    bookstore-test dotnet test /src/BookStore/BookStore.csproj
+                    '''
+                }
+            }
         }
-    }
-}
 
         stage('Cleanup Docker Containers') {
             steps {
                 script {
-                    // Stop and remove the test container after running tests
+                    // Cleanup Docker containers after tests
                     bat '''
                     docker stop bookstore-test-container || true
                     docker rm bookstore-test-container || true
