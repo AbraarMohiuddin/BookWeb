@@ -45,7 +45,7 @@ pipeline {
                     // Run tests inside the Docker container
                     bat '''
                     docker run --name bookstore-test-container bookstore-test \
-                    dotnet test /src/BookStore/BookStore.Tests/BookStore.Tests.csproj
+                    dotnet test /src/BookStore/BookStore.sln
                     '''
                 }
             }
