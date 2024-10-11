@@ -56,26 +56,32 @@ pipeline {
     }
 }
 
-        stage('Deploy to Azure') {
-            when {
-                expression {
-                    currentBuild.result == null || currentBuild.result == 'SUCCESS'
-                }
-            }
-            steps {
-                script {
-                    withCredentials([file(credentialsId: 'Azure_Publish_Profile', variable: 'PUBLISH_PROFILE')]) {
-                        bat '''
-                        az webapp deployment source config-zip ^
-                        --resource-group defaultresourcegroup-cau ^
-                        --name BookStore20241010200200 ^
-                        --src-path publish_output.zip ^
-                        --publish-profile %PUBLISH_PROFILE%
-                        '''
-                    }
-                }
+stage('Deploy to Azure') {
+    when {
+        expression {
+            currentBuild.result == null || currentBuild.result == 'SUCCESS'
+        }
+    }
+    steps {
+        script {
+            withCredentials([file(credentialsId: 'Azure_Publish_Profile', variable: 'PUBLISH_PROFILE')]) {
+                powershell '''
+                $publishProfile = [xml](Get-Content $env:PUBLISH_PROFILE)
+                $publishUrl = $publishProfile.publishData.publishProfile[0].publishUrl
+                $userName = $publishProfile.publishData.publishProfile[0].userName
+                $userPWD = $publishProfile.publishData.publishProfile[0].userPWD
+                $zipFilePath = 'publish_output.zip'
+
+                $password = ConvertTo-SecureString $userPWD -AsPlainText -Force
+                $credential = New-Object System.Management.Automation.PSCredential($userName, $password)
+
+                Invoke-WebRequest -Uri "https://$publishUrl/api/zipdeploy" -Method POST -InFile $zipFilePath -Headers @{"Content-Type"="application/zip"} -Credential $credential
+                '''
             }
         }
+    }
+}
+
     }
 
     post {
