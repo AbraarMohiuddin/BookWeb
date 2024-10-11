@@ -44,7 +44,7 @@ pipeline {
                 script {
                     // Cleanup Docker images after build
                     bat '''
-                    docker rmi bookstore-test || true
+                    docker rmi bookstore-test || exit /b 0
                     '''
                 }
             }
